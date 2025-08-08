@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pazham Hub — Totally Useless Edition</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+    body { background: linear-gradient(135deg, #fffbe6 0%, #ffe7b3 100%); font-family: 'Inter', system-ui, sans-serif; color: #2b2b2b; margin: 0; }
+    header { background: linear-gradient(90deg, #ffd77a, #ffb400); padding: 28px 0 18px 0; text-align: center; font-weight: 900; font-size: 2.2rem; letter-spacing: 1px; box-shadow: 0 6px 24px rgba(0,0,0,.08); border-radius: 0 0 32px 32px; }
+    .wrap { max-width: 1200px; margin: 32px auto; padding: 24px; display: grid; grid-template-columns: 1fr; gap: 32px; }
+    .grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 32px; }
+    .card { background: #fff; border-radius: 18px; padding: 28px 24px; box-shadow: 0 10px 40px rgba(18,18,18,.08); min-height: 160px; overflow: hidden; position: relative; }
+    .title { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; font-size: 1.2rem; font-weight: 700; }
+    .title h3 { margin: 0; font-size: 1.2rem; }
+    .controls { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+    .btn { background: linear-gradient(90deg, #ffb400, #ffd77a); border: 0; padding: 10px 18px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 1rem; box-shadow: 0 2px 8px #ffe7b3; transition: background 0.2s; }
+    .btn:hover { background: linear-gradient(90deg, #ffd77a, #ffb400); }
+    .input { padding: 10px; border-radius: 10px; border: 1px solid #f0d7a0; font-size: 1rem; }
+    .small { font-size: 0.98rem; color: #6b665d; margin-top: 8px; }
+    .status { padding: 16px; border-radius: 10px; background: #fff7d9; border: 1px dashed #ffdf9f; min-height: 56px; display: flex; align-items: center; font-size: 1.1rem; }
+    .preview { max-width: 100%; border-radius: 12px; margin-top: 12px; border: 1px solid #f3e2b8; box-shadow: 0 2px 8px #ffe7b3; }
+    .timerDisplay { font-size: 1.2rem; margin-top: 16px; }
+    .canvasWrap { position: relative; }
+    canvas { width: 100%; height: 260px; border-radius: 10px; background: #fbfff7; display: block; box-shadow: 0 2px 8px #ffe7b3; }
+    .note { font-size: 1rem; color: #b48a00; margin-top: 10px; }
+    .bad { color: #ff4d6d; font-weight: 800; }
+    .footer { margin-top: 12px; font-size: 0.95rem; color: #7a746c; }
+    .grid-span-2 { grid-column: span 2; }
+    .visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+    .hidden { display: none !important; }
+    @media(max-width:900px){.grid{grid-template-columns:1fr;gap:18px;}}
+    </style>
+</head>
+<body>
+    <header>🍌 Pazham Hub — Banana Market & Fun</header>
+    <div class="wrap">
+        <div class="grid">
+            <!-- Judge Card -->
+            <div class="card" id="judgeCard">
+                <div class="title"><span style="font-size:1.5em">🤖</span><h3>AI Pazhampori Judge <span style="font-weight:400;font-size:0.9em;">(Totally Fake)</span></h3></div>
+                <label for="judgeFile" class="visually-hidden">Upload image for judging</label>
+                <input id="judgeFile" type="file" accept="image/*" class="input" title="Upload image for judging">
+                <div id="judgeThinking" class="small"></div>
+                <img id="judgePreview" class="preview hidden" alt="Preview of uploaded pazhampori image">
+                <div id="judgeResult" class="status judgeResultMargin">Upload a pazhampori to get judged.</div>
+                <div class="controls controlsMargin">
+                    <button id="judgeButton" class="btn" type="button">Judge (Pretend)</button>
+                    <button id="judgeReset" class="btn" type="button">Reset</button>
+                </div>
+                <div class="footer">Verdict bias: <span style="color:#ffb400">love</span> &gt; technique</div>
+            </div>
+
+            <!-- Timer Card -->
+            <div class="card" id="timerCard">
+                <div class="title"><span style="font-size:1.5em">⏰</span><h3>Pazhampori Timer <span style="font-weight:400;font-size:0.9em;">(Unreliable)</span></h3></div>
+                <label for="timerMins">Target minutes</label>
+                <input id="timerMins" type="number" value="5" min="1" class="input timer-mins-input">
+                <div class="controls controlsMargin">
+                    <button id="timerStart" class="btn" type="button">Start Timer</button>
+                    <button id="timerStop" class="btn" type="button">Stop</button>
+                    <button id="timerChaos" class="btn" type="button">Chaos Mode</button>
+                </div>
+                <div id="timerDisplay" class="timerDisplay small">Ready. This timer is opinionated.</div>
+                <div class="footer">It will say <b>"Done!"</b> at thrillingly wrong moments.</div>
+            </div>
+
+            <!-- Stock Card (Full Width) -->
+            <div class="card grid-span-2" id="stockCard">
+                <div class="title"><span style="font-size:1.5em">📈</span><h3>Banana Stock Market <span style="font-weight:400;font-size:0.9em;">(Live Price)</span></h3></div>
+                <div class="canvasWrap"><canvas id="stockCanvas" width="1000" height="260"></canvas></div>
+                <div class="controls controlsMargin">
+                    <button id="stockStart" class="btn" type="button">Start Feed</button>
+                    <button id="stockPause" class="btn" type="button">Pause</button>
+                    <button id="stockCrash" class="btn" type="button">Trigger Banana Bubble Crash</button>
+                    <button id="stockCandle" class="btn" type="button">Toggle Candlesticks</button>
+                    <div class="small predAutoMargin">Pred: <span id="predText">🤔 calculating</span></div>
+                </div>
+                <div class="small stockInfoMargin">Current Banana Price: <span style="font-weight:700;color:#1b8f3b">₹<span id="stockPrice">33.98</span> /kg</span> &nbsp; | &nbsp; <span id="marketMood">moodless</span></div>
+                <div class="note" id="stockNote">Live mandi price as of 08 Aug 2025. Market runs on whim and fritters.</div>
+            </div>
+
+            <!-- Tracker Card (Full Width) -->
+            <div class="card grid-span-2" id="trackerCard">
+                <div class="title"><span style="font-size:1.5em">🚚</span><h3>Banana Delivery Tracker</h3></div>
+                <div class="status" id="deliveryStatus">No delivery. No hope.</div>
+                <div class="controls controlsMargin">
+                    <button id="refreshStatus" class="btn" type="button">Refresh Status</button>
+                    <button id="etaBtn" class="btn" type="button">Get ETA</button>
+                    <button id="weirdBtn" class="btn" type="button">Make It Uglier</button>
+                </div>
+                <div class="small deliveryIdMargin">Delivery ID: <span id="deliveryId"></span></div>
+                <div class="footer">Disclaimer: delivery boy may be a poet.</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

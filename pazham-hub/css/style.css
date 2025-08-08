@@ -1,0 +1,154 @@
+:root {
+    --bg: #fff8e6;
+    --card: #fff;
+    --accent: #ffb400;
+    --muted: #6b665d;
+    --danger: #ff4d6d;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, var(--bg), #fff);
+    color: #2b2b2b;
+}
+
+header {
+    background: linear-gradient(90deg, #ffd77a, #ffb400);
+    padding: 18px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+.wrap {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 18px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(18,18,18,.06);
+    min-height: 120px;
+    overflow: hidden;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.title h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    background: var(--accent);
+    border: 0;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+}
+
+.input {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #f0d7a0;
+    font-family: 'Inter', sans-serif;
+}
+
+.small {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.status {
+    padding: 12px;
+    border-radius: 8px;
+    background: #fff7d9;
+    border: 1px dashed #ffdf9f;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+}
+
+.preview {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 1px solid #f3e2b8;
+}
+
+.timerDisplay {
+    font-size: 20px;
+    margin-top: 12px;
+}
+
+.canvasWrap {
+    position: relative;
+}
+
+canvas {
+    width: 100%;
+    height: 240px;
+    border-radius: 8px;
+    background: #fbfff7;
+    display: block;
+}
+
+.ticker {
+    font-weight: 800;
+}
+
+.note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.bad {
+    color: var(--danger);
+    font-weight: 800;
+}
+
+.footer {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #7a746c;
+}
+
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card[style*="grid-column:span 2"] {
+        grid-column: span 1 !important;
+    }
+}
